@@ -10,6 +10,7 @@ module.exports = {
       accounts:[`${process.env.WALLET_ADDRESS_PRIVATE_KEY}`]
     }
   },
+    gasReporter: {       enabled: true,       currency: 'USD',       gasPrice: 100,     },
   etherscan:{
     apiKey:`${process.env.POLYGON_MUMBAI_API_KEY}`
   }

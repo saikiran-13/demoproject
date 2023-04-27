@@ -1,5 +1,5 @@
 // const { ethers } = require("hardhat");
-
+// 0x2613dC5Cf011CE11Cb9e8E0AC350daA8F88cf0C6
 //Taking usdt
 let provider = new ethers.providers.Web3Provider(window.ethereum)//provider --> an anonymous connection on ethereum network
 let signer;
@@ -7,6 +7,7 @@ console.log("hi")
 async function connectMetamask(){
     await provider.send("eth_requestAccounts", []);
     signer = provider.getSigner()
+    console.log("Accounts :",await provider.listAccounts())
     console.log("Account Address:",await signer.getAddress())
 
 }

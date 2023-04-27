@@ -11,5 +11,6 @@ async function details(){
     console.log("Symbol:",await contract.symbol())
     console.log("Decimals",await contract.decimals())
     console.log("Totalsupply",(await contract.totalSupply()).toNumber())
+
 }
 details()

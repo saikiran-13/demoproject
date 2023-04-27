@@ -3,7 +3,7 @@ const {abi} = require('./artifacts/contracts/demo.sol/counter.json')
 // const {contractAddress} = require('./task/demo')
 // console.log(abi)
 // console.log(contractAddress)
-const contractAddress = '0x9a44BD511B76aBBC3AF165c008aeC8DFbCDe9eEA'
+const contractAddress = '0x2613dC5Cf011CE11Cb9e8E0AC350daA8F88cf0C6'
 const RPC = 'https://polygon-mumbai.g.alchemy.com/v2/BwyHvHONilHMEc9QpsoGpyJ9wXJpAzHY'
 const account = '0xec18A3d572487d4DEFdd3864E7e992148319ca40'
 const account2 = '0xe6A9D13D93CbA162A0fB46d338ADD071247910f3'
@@ -18,12 +18,14 @@ let wallet = new ethers.Wallet(privateKey,provider)
 async function details(){
     const bal = await provider.getBalance(account)
     // console.log(await provider.getTransactionCount())
+    // console.log("Accounts :",await provider.listAccounts())
     console.log("Gas Price",await provider.getGasPrice())
+    console.log("Gas fee Data",await provider.getFeeData())
     console.log("Signer", provider.getSigner())
     console.log("Balance ",ethers.utils.formatEther(bal))//converting wei to ether by using formatEther
     console.log("Address ",await wallet.getAddress())
     console.log("Transaction Count",await wallet.getTransactionCount())
-   
+   //use other functions like getBlockNumber(),getTransactionReceipt(),GetTranscationHash() etc....
     //sendTransaction 
     console.log("before",ethers.utils.formatEther(await wallet.getBalance()))
     const trans = await wallet.sendTransaction({
@@ -95,6 +97,15 @@ writeContract()
 //=====================================================================================
 // Event listener and filters
 async function eventLog(){
+
+let _to = '0x4d8f1cFF7b1414bE6F773b7Fda772Cee94B92f1f'
+
+//Event listeners
+contract.on('transferCalled',(_to,ethers.utils.parseEther('0.005'),()=>{
+console.log("To address",_to)
+}))
+
+//Filtering events
 let events = await contract.queryFilter('transferCalled')
 console.log(await contract.queryFilter(events,-20))
 events = events.filter((event)=>{return event.args[1]== 3000000000000000?true:false})
@@ -106,7 +117,11 @@ console.log(filteredevents)
 eventLog()
 // //=================================================================================
 // async function gasEstimation(){
-//     let gasfee = await contract.estimateGas.deposit(ethers.utils.parseEther('0.001'))
-//     console.log("Gas fee:",gasfee)
+//     const value = ethers.utils.parseEther('0.001')
+//     const tx = await contract.deposit({value})
+//     let gaslimit = await provider.estimateGas(tx)
+//     console.log("Gas limit:",gaslimit)
 // }
 // gasEstimation()
+
+//bydeafault our private key is stored in localstorage in encrypted format by metamask
